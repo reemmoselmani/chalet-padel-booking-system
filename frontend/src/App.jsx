@@ -1,28 +1,41 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Layout from './components/Layout';
 
+import Padel from './pages/Padel';
+import PadelDetail from './pages/PadelDetail';
+import PadelBooking from './pages/PadelBooking';
+
+import Chalets from './pages/Chalets';
+import ChaletDetail from './pages/ChaletDetail';
+import ChaletBooking from './pages/ChaletBooking';
 
 function App() {
-  return(
+  return (
     <Router>
-      <nav>
-        <Link to="/">Home</Link> | 
-        <Link to="/register" style={{ margin: "0 10px" }}>Register</Link> | 
-        <Link to="/login">Login</Link>
-      </nav>
-
       <Routes>
-        
-        <Route path="/register" element={<Register />} />
-        <Route path='/login' element = {<Login/>} />
-        
+        <Route path="/" element={<Layout />}>
+
+          <Route index element={<Home />} />
+
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+
+          <Route path="padel" element={<Padel />} />
+          <Route path="padel/:id" element={<PadelDetail />} />
+          <Route path="padel/:id/book" element={<PadelBooking />} />
+
+          <Route path="chalets" element={<Chalets />} />
+          <Route path="chalets/:id" element={<ChaletDetail />} />
+          <Route path="chalets/:id/book" element={<ChaletBooking />} />
+
+        </Route>
       </Routes>
     </Router>
-
-
   );
- 
 }
 
 export default App;

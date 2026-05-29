@@ -114,7 +114,7 @@ const Padel = () => {
                             <h3 style={courtNameStyle}>
                                 {court.name}
                             </h3>
-<p style={infoStyle}>
+                            <p style={infoStyle}>
                                 📍 {court.location}
                             </p>
 

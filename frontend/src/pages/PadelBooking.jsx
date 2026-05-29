@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { isTokenValid } from '../utils/auth';
 
 const PadelBooking = () => {
     const { id } = useParams();
@@ -24,9 +25,9 @@ const PadelBooking = () => {
             }
 
             try {
-                const response = await axios.get(`
-                    http://localhost:3000/api/padel-bookings/court/${id}/date/${booking.booking_date}
-                `);
+                const response = await axios.get(
+                    `http://localhost:3000/api/padel-bookings/court/${id}/date/${booking.booking_date}`
+                );
 
                 setUnavailableSlots(response.data);
             } catch (err) {
@@ -65,7 +66,7 @@ const PadelBooking = () => {
 
         const token = localStorage.getItem('token');
 
-        if (!token) {
+        if (!token || !isTokenValid()) {
             alert('Please login before booking');
             navigate('/login');
             return;
@@ -87,7 +88,7 @@ const PadelBooking = () => {
                 }
             );
 
-             alert(response.data.message || 'Padel booking successful!');
+            alert(response.data.message || 'Padel booking successful!');
             navigate('/padel');
         } catch (err) {
             alert(err.response?.data?.message || 'Booking failed');
@@ -122,8 +123,6 @@ const PadelBooking = () => {
                         {booking.booking_date && (
                             <div style={slotsBoxStyle}>
                                 <strong>Unavailable slots:</strong>
-
-
 {unavailableSlots.length === 0 ? (
                                     <p style={availableTextStyle}>No bookings on this date yet.</p>
                                 ) : (
@@ -270,8 +269,6 @@ const infoBoxStyle = {
     fontSize: '14px',
     lineHeight: '1.5'
 };
-
-
 const buttonStyle = {
     width: '100%',
     padding: '14px',

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { isTokenValid } from '../utils/auth';
 
 const ChaletBooking = () => {
     const { id } = useParams();
@@ -17,9 +18,9 @@ const ChaletBooking = () => {
     useEffect(() => {
         const fetchUnavailableDates = async () => {
             try {
-                const response = await axios.get(`
-                    http://localhost:3000/api/chalet-bookings/chalet/${id}/unavailable
-                `);
+                const response = await axios.get(
+                     `http://localhost:3000/api/chalet-bookings/chalet/${id}/unavailable`
+                );
 
                 setUnavailableDates(response.data);
             } catch (err) {
@@ -58,7 +59,7 @@ const ChaletBooking = () => {
 
         const token = localStorage.getItem('token');
 
-        if (!token) {
+        if (!token ||  !isTokenValid()) {
             alert('Please login before booking');
             navigate('/login');
             return;
@@ -79,10 +80,10 @@ const ChaletBooking = () => {
                 }
             );
 
-            alert(response.data.message || 'Chalet booking successful!');
+            alert(response.data.message ||  'Chalet booking successful!');
             navigate('/chalets');
         } catch (err) {
-            alert(err.response?.data?.message ||  'Booking failed');
+alert(err.response?.data?.message || 'Booking failed');
         }
     };
 
@@ -128,8 +129,7 @@ const ChaletBooking = () => {
                         />
                     </div>
 
-
-<div>
+                    <div>
                         <label style={labelStyle}>Check-out Date</label>
                         <input
                             type="date"
@@ -223,7 +223,6 @@ const labelStyle = {
     fontWeight: 'bold',
     color: '#374151'
 };
-
 const inputStyle = {
     width: '100%',
     padding: '13px',
